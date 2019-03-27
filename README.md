@@ -1,5 +1,7 @@
 # Parallel Poisson Solver
 
+## Compilation and Running the Code
+
 The folder ```src``` contains the source code.
 Compilation of source code is done with a makefile.
 To compile the program, a C compiler is needed.
