@@ -66,7 +66,7 @@ int read()
 
  FILE *fp;
 
- fp = fopen("corrugated.grid","r");
+ fp = fopen("uniform.grid","r");
 
  fscanf(fp,"%d",&n);
 
