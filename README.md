@@ -1,1 +1,1 @@
-# Parallel_Poisson
+# Parallel Poisson Solver
