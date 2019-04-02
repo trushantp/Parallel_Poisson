@@ -115,7 +115,8 @@ int solver()
   }
   diff = pow(r,0.5);
   count1++;
-  printf("%d\t%lf\n",count1,diff);
+  if (count1 % 100 == 0)
+    printf("%d\t%lf\n",count1,diff);
  }
 
  printf("*****SOLVER FOR STEADY STATE COMPLETED*****\n\n");
