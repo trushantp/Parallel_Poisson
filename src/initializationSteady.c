@@ -3,18 +3,36 @@
 int initializationSteady()
 {
 
+ printf("*****INITIALIZING THE BOUNDARY CONDITIONS FOR THE SOLVER*****\n");
+
  int face_flag[5];
+ int n;
+
+ FILE *fp;
+ fp = fopen("input.in","r");
+ fscanf(fp,"%d",&n);
+ int bc_number[n+1];
+ double bc_prop[n+1];
+
+ for (i=1;i<=n;i++)
+    fscanf(fp,"%d %lf",&bc_number[i],&bc_prop[i]);
 
  for (i=1;i<=4;i++)
-  face_flag[i] = 0;
+    face_flag[i] = 0;
 
  for (i=1;i<=f;i++)
  {
   if ((face[i].bc == 1001 || face[i].bc == 1002 || face[i].bc == 1003 || face[i].bc == 1004 ) && face_flag[face[i].bc-1000] == 0)
   {
-   printf("Dirichlet condition for wall %d:\n",face[i].bc-1000);
-   printf("Enter the temperature:");
-   scanf("%lf",&t[face[i].bc-1000]);
+      for (j=1;j<=n;j++)
+      {
+          if (face[i].bc == bc_number[j])
+          {
+              t[face[i].bc-1000] = bc_prop[j];
+              break;
+          }
+      }
+   printf("Dirichlet condition for wall %d is %lf K.\n",face[i].bc-1000,t[face[i].bc-1000]);
    face_flag[face[i].bc-1000] = 1;
   }
 
@@ -44,6 +62,10 @@ int initializationSteady()
   }
 
  }
+
+ fclose(fp);
+
+ printf("*****INITIALIZED THE BOUNDARY CONDITIONS FOR THE SOLVER*****\n");
 
  return(0); 
 

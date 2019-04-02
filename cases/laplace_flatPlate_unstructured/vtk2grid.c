@@ -170,11 +170,11 @@ int main()
         }
         else if (node[face_temp[k].node[1]+1].yn == 0.0 && node[face_temp[k].node[2]+1].yn == 0.0)
         {
-            fprintf(tkp,"1002\n");
+            fprintf(tkp,"1004\n");
         }
         else if (node[face_temp[k].node[1]+1].yn == 1.0 && node[face_temp[k].node[2]+1].yn == 1.0)
         {
-            fprintf(tkp,"1004\n");
+            fprintf(tkp,"1002\n");
         }
         else
         {
