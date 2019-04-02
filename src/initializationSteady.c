@@ -12,10 +12,25 @@ int initializationSteady()
  fp = fopen("input.in","r");
  fscanf(fp,"%d",&n);
  int bc_number[n+1];
- double bc_prop[n+1];
+ double bc_prop[n+1],bc_prop2[n+1];
 
  for (i=1;i<=n;i++)
-    fscanf(fp,"%d %lf",&bc_number[i],&bc_prop[i]);
+ {
+    fscanf(fp,"%d",&bc_number[i]);
+
+    if ( (bc_number[i] == 1001) || (bc_number[i] == 1002 ) || (bc_number[i] == 1003 ) || (bc_number[i] == 1004 ) )
+        fscanf(fp,"%lf",&bc_prop[i]);
+    
+    if ( (bc_number[i] == 2001) || (bc_number[i] == 2002 ) || (bc_number[i] == 2003 ) || (bc_number[i] == 2004 ) )
+        ;
+
+    if ( (bc_number[i] == 3001) || (bc_number[i] == 3002 ) || (bc_number[i] == 3003 ) || (bc_number[i] == 3004 ) )
+        fscanf(fp,"%lf",&bc_prop[i]);
+
+    if ( (bc_number[i] == 4001) || (bc_number[i] == 4002 ) || (bc_number[i] == 4003 ) || (bc_number[i] == 4004 ) )
+        fscanf(fp,"%lf %lf",&bc_prop[i],&bc_prop2[i]);
+    
+ }
 
  for (i=1;i<=4;i++)
     face_flag[i] = 0;
@@ -49,7 +64,7 @@ int initializationSteady()
     {
         if (face[i].bc == bc_number[j])
         {
-            hf[face[i].bc-1000] = bc_prop[j];
+            hf[face[i].bc-3000] = bc_prop[j];
             break;
         }
     }
@@ -61,11 +76,20 @@ int initializationSteady()
 
   if ((face[i].bc == 4001 || face[i].bc == 4002 || face[i].bc == 4003 || face[i].bc == 4004 ) && face_flag[face[i].bc-4000] == 0)
   {
+    for (j=1;j<=n;j++)
+    {
+        if (face[i].bc == bc_number[j])
+        {
+            alpha[face[i].bc-4000] = bc_prop[j];
+            Tinf[face[i].bc-4000] = bc_prop2[j];
+            break;
+        }
+    }  
    printf("Robin's or Mixed condition for wall %d:\n",face[i].bc-4000);
-   printf("Enter value of alpha(convection coeff./thermal conductivity):");
-   scanf("%lf",&alpha[face[i].bc-4000]);
-   printf("Enter ambient temperature:");
-   scanf("%lf",&Tinf[face[i].bc-4000]);
+   printf("Alpha(convection coeff./thermal conductivity) is %lf",alpha[face[i].bc-4000]);
+//    scanf("%lf",&alpha[face[i].bc-4000]);
+   printf("Ambient temperature is %lf",Tinf[face[i].bc-4000]);
+//    scanf("%lf",&Tinf[face[i].bc-4000]);
    face_flag[face[i].bc-4000] = 1;
   }
 
