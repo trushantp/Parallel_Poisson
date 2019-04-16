@@ -1,3 +1,5 @@
+// Main file for the solver. Calls all the functions / subroutines to do the work.
+
 #include"global.h"
 
 struct node_data *node;
@@ -31,50 +33,58 @@ int writingVTK();
 int main()
 {
 
+ // Dummy variable to check if there is any error while running the functions
  int error;
-
+ 
+ // Reads the mesh and stores it in memory
  error = readGrid();
  if (error != 0)
  {
   printf("Error in reading\nHence exiting\n");
   return(0);
  }
-
+ 
+ // Initializes the boundary condition for each face and internal cells too
  error = initializationSteady();
  if (error != 0)
  {
   printf("Error in initialization\nHence exiting\n");
   return(0);
  } 
-
+ 
+ // Calculates which are the neighbouring cells for each cell
  error = cellNeighbours();
  if (error != 0)
  {
   printf("Error in assigning neighbouring cells\nHence exiting\n");
   return(0);
  }
-
+ 
+ // Calculates the face distance (i.e. edge distance for 2-d) for each face based on the co-ordinate of the vertices
  error = faceDistance();
  if (error != 0)
  {
   printf("Error in calculating face distance\nHence exiting\n");
   return(0);
  }
-
+ 
+ // Solves the Poisson equation with Gauss-seidel successive over-relaxation
  error = solver();
  if (error != 0)
  {
   printf("Error in solver\nHence exiting\n");
   return(0);
  }
-
+ 
+ // Gets the information of which cells share a node for interpolation to nodes in VTK file
  error = nodes2Cells();
  if (error != 0)
  {
   printf("Error in assigning node to cell pair\nHence exiting\n");
   return(0);
  }
-
+ 
+ // Writes paraview legacy VTK file for post-processing
  error = writingVTK();
  if (error != 0)
  {

@@ -1,3 +1,4 @@
+// This function solves the poisson equation with Gauss-Seidel successive over-relaxation method
 #include"global.h"
 
 int solver()
@@ -8,12 +9,15 @@ int solver()
  double a[10],ap,S;
  double temp,old,diff,r;
  int count1=0;
-
+ 
+ // Allocating memory for temperature for each cell
  T = (double *) malloc((c+1)*sizeof(double));
+ // Allocating memory for centroid x, y and z co-ordinate for a cell
  xc = (double *) malloc((c+1)*sizeof(double));
  yc = (double *) malloc((c+1)*sizeof(double));
  zc = (double *) malloc((c+1)*sizeof(double));
 
+ // Looping over all the cells to find the centroid co-ordinate
  for (i=1;i<=c;i++)
  {
   xc[i] = 0.0;
@@ -30,9 +34,11 @@ int solver()
   zc[i] = zc[i]/cell[i].num_nodes; 
   T[i] = 0.0;
  }
-
+ 
+ // Initializing the rms error to 10, so that the loop runs
  diff = 10;
-
+ 
+ // Solver loop runs till the rms error goes below 10e-7
  while ( diff > 10e-7)
  {
   r = 0;
