@@ -61,3 +61,32 @@ Once it is compiled, it will create an executable named ```poissonSolver```, cop
 ```
 ./poissonSolver
 ```
+
+## Validation for Poisson Solver
+
+The solution of the Poisson equation is assumed to be 
+
+$
+xy(1-x)(1-y)
+$
+
+So, the source term becomes
+
+$
+-2x + 2x^2 -2y + 2y^2
+$
+
+### Unstructured Mesh
+
+<!-- ![Mesh](Mesh.png) -->
+<img src="Mesh.png" alt="drawing" width="400"/>
+
+### Temperature contour
+
+<!-- ![Temperature Contour](temperatureContour.png) -->
+<img src="temperatureContour.png" alt="drawing" width="400"/>
+
+### Comparison with the analytical solution
+
+<!-- ![Comparison with analytical solution](comparisonVsAnalytical.png) -->
+<img src="comparisonVsAnalytical.png" alt="drawing" width="400"/>

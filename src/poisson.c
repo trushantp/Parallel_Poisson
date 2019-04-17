@@ -13,6 +13,7 @@ int n,c,f;
 int count=0;
 double t[5],hf[5],alpha[5],Tinf[5];
 double *d_f;
+double *a_c;
 double *T,*xc,*yc,*zc;
 
 int choice,w_timestep;

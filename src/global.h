@@ -56,6 +56,8 @@ extern int count;
 extern double t[5],hf[5],alpha[5],Tinf[5];
 // Face distance or face length variable
 extern double *d_f;
+// Area of each cell
+extern double *a_c;
 // Temperature, x,y, and z centroid co-ordinate
 extern double *T,*xc,*yc,*zc;
 
