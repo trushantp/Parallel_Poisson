@@ -39,7 +39,7 @@ int solver()
   diff = 10;
 
   // Solver loop runs till the rms error goes below 10e-7
-  while (diff > 1e-6)
+  while (diff > 1e-8)
   {
     r = 0;
     for (i = 1; i <= c; i++)
@@ -89,29 +89,6 @@ int solver()
               a[j] = d_f[ncell[i].face[j]] / temp;
               ap = ap + 2 * a[j];
               S = 2 * a[j] * t[face[ncell[i].face[j]].bc - 1000] + (2 * xc[i] - 2 * pow(xc[i], 2) + 2 * yc[i] - 2 * pow(yc[i], 2)) * a_c[i];
-              T[i] = T[i] + S;
-            }
-            if (face[ncell[i].face[j]].bc == 2001 || face[ncell[i].face[j]].bc == 2002 || face[ncell[i].face[j]].bc == 2003 || face[ncell[i].face[j]].bc == 2004)
-            {
-              S = (2 * xc[i] - 2 * pow(xc[i], 2) + 2 * yc[i] - 2 * pow(yc[i], 2)) * a_c[i];
-              T[i] = T[i] + S;
-            }
-            if (face[ncell[i].face[j]].bc == 3001 || face[ncell[i].face[j]].bc == 3002 || face[ncell[i].face[j]].bc == 3003 || face[ncell[i].face[j]].bc == 3004)
-            {
-              S = -hf[face[ncell[i].face[j]].bc - 3000] * d_f[ncell[i].face[j]] + (2 * xc[i] - 2 * pow(xc[i], 2) + 2 * yc[i] - 2 * pow(yc[i], 2)) * a_c[i];
-              T[i] = T[i] + S;
-            }
-            if (face[ncell[i].face[j]].bc == 4001 || face[ncell[i].face[j]].bc == 4002 || face[ncell[i].face[j]].bc == 4003 || face[ncell[i].face[j]].bc == 4004)
-            {
-              temp = 0.0;
-              temp = (node[face[ncell[i].face[j]].node[1]].xn + node[face[ncell[i].face[j]].node[2]].xn) / 2;
-              temp = pow(2 * (temp - xc[i]), 2);
-              temp = temp + pow(2 * (((node[face[ncell[i].face[j]].node[1]].yn + node[face[ncell[i].face[j]].node[2]].yn) / 2) - yc[i]), 2);
-              temp = pow(temp, 0.5);
-              temp = 2 * temp;
-              a[j] = d_f[ncell[i].face[j]] / temp;
-              ap = ap - a[j] * ((2 * alpha[face[ncell[i].face[j]].bc - 4000] * temp) / (2 - alpha[face[ncell[i].face[j]].bc - 4000] * temp));
-              S = -a[j] * (2 * temp * alpha[face[ncell[i].face[j]].bc - 4000] * Tinf[face[ncell[i].face[j]].bc - 4000]) / (2 - temp * alpha[face[ncell[i].face[j]].bc - 4000]) + (2 * xc[i] - 2 * pow(xc[i], 2) + 2 * yc[i] - 2 * pow(yc[i], 2)) * a_c[i];
               T[i] = T[i] + S;
             }
           }
