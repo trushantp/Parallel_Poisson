@@ -7,6 +7,7 @@
 #include<stdlib.h>
 #include<math.h>
 #include<string.h>
+#include<omp.h>
 
 // Structure for storing the co-ordinates of node
 struct node_data
