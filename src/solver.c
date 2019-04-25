@@ -12,6 +12,7 @@ int solver()
 
   // Allocating memory for temperature for each cell
   T = (double *)malloc((c + 1) * sizeof(double));
+  Told = (double *)malloc((c + 1) * sizeof(double));
   // Allocating memory for centroid x, y and z co-ordinate for a cell
   xc = (double *)malloc((c + 1) * sizeof(double));
   yc = (double *)malloc((c + 1) * sizeof(double));
@@ -33,6 +34,7 @@ int solver()
     yc[i] = yc[i] / cell[i].num_nodes;
     zc[i] = zc[i] / cell[i].num_nodes;
     T[i] = 0.0;
+    Told[i] = 0.0;
   }
 
   // Initializing the rms error to 10, so that the loop runs
@@ -42,9 +44,13 @@ int solver()
   while (diff > 1e-8)
   {
     r = 0;
+    #pragma omp parallel for reduction(+:r) private(j,ap,temp,S,a)
     for (i = 1; i <= c; i++)
     {
-      old = T[i];
+      int id = omp_get_num_threads();
+      int iam = omp_get_thread_num();
+      // printf("Hello World from thread %d of %d threads\n",iam,id);
+
       if (ncell[i].num_of_ncells == ncell[i].num_of_faces)
       {
         ap = 0.0;
@@ -55,7 +61,7 @@ int solver()
           temp = sqrt(pow((xc[i] - xc[ncell[i].ncells[j]]), 2) + pow((yc[i] - yc[ncell[i].ncells[j]]), 2));
           a[j] = d_f[ncell[i].face[j]] / temp;
           ap = ap + a[j];
-          T[i] = T[i] + a[j] * T[ncell[i].ncells[j]];
+          T[i] = T[i] + a[j] * Told[ncell[i].ncells[j]];
         }
         // Source term is -2x + 2x^2 - 2y + 2y^2
         // The analytical solution corresponding to this term is xy(1-x)(1-y) 
@@ -74,7 +80,7 @@ int solver()
             temp = sqrt(pow((xc[i] - xc[ncell[i].ncells[j]]), 2) + pow((yc[i] - yc[ncell[i].ncells[j]]), 2));
             a[j] = d_f[ncell[i].face[j]] / temp;
             ap = ap + a[j];
-            T[i] = T[i] + a[j] * T[ncell[i].ncells[j]];
+            T[i] = T[i] + a[j] * Told[ncell[i].ncells[j]];
           }
           if (ncell[i].ncells[j] == 0)
           {
@@ -95,12 +101,17 @@ int solver()
         }
         T[i] = T[i] / ap;
       }
-      r = r + pow(T[i] - old, 2);
+      r += pow(T[i] - Told[i], 2);
     }
     diff = pow(r, 0.5);
     count1++;
     if (count1 % 100 == 0)
-      printf("%d\t%lf\n", count1, diff);
+      printf("%d\t%16.8E\n", count1, diff);
+
+    #pragma omp parallel for
+    for (i = 1; i <= c; i++)
+      Told[i] = T[i];
+
   }
 
   printf("*****SOLVER FOR STEADY STATE COMPLETED*****\n\n");

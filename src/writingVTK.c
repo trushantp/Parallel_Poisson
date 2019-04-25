@@ -60,9 +60,7 @@ int writingVTK()
   fprintf(fp, "LOOKUP_TABLE default\n");
 
   for (i = 1; i <= c; i++)
-  {
     fprintf(fp, "%24.16E\n", T[i]);
-  }
 
   // Writing the temperature data for each node
   fprintf(fp, "POINT_DATA %d\n", n);

@@ -52,46 +52,8 @@ int initializationSteady()
                     break;
                 }
             }
-            printf("Dirichlet condition for wall %d is %lf K.\n", face[i].bc - 1000, t[face[i].bc - 1000]);
+            printf("Dirichlet condition for wall %d is %lf C.\n", face[i].bc - 1000, t[face[i].bc - 1000]);
             face_flag[face[i].bc - 1000] = 1;
-        }
-
-        if ((face[i].bc == 2001 || face[i].bc == 2002 || face[i].bc == 2003 || face[i].bc == 2004) && face_flag[face[i].bc - 2000] == 0)
-        {
-            printf("Homogeneous Neumann Condition for wall %d:\n", face[i].bc - 2000);
-            printf("Heat flux = 0\nInsulated boundary condition\n");
-            face_flag[face[i].bc - 2000] = 1;
-        }
-
-        if ((face[i].bc == 3001 || face[i].bc == 3002 || face[i].bc == 3003 || face[i].bc == 3004) && face_flag[face[i].bc - 3000] == 0)
-        {
-            for (j = 1; j <= n; j++)
-            {
-                if (face[i].bc == bc_number[j])
-                {
-                    hf[face[i].bc - 3000] = bc_prop[j];
-                    break;
-                }
-            }
-            printf("Non-Homogeneous Neumann Condition for wall %d is %lf.\n", face[i].bc - 3000, hf[face[i].bc - 3000]);
-            face_flag[face[i].bc - 3000] = 1;
-        }
-
-        if ((face[i].bc == 4001 || face[i].bc == 4002 || face[i].bc == 4003 || face[i].bc == 4004) && face_flag[face[i].bc - 4000] == 0)
-        {
-            for (j = 1; j <= n; j++)
-            {
-                if (face[i].bc == bc_number[j])
-                {
-                    alpha[face[i].bc - 4000] = bc_prop[j];
-                    Tinf[face[i].bc - 4000] = bc_prop2[j];
-                    break;
-                }
-            }
-            printf("Robin's or Mixed condition for wall %d:\n", face[i].bc - 4000);
-            printf("Alpha(convection coeff./thermal conductivity) is %lf", alpha[face[i].bc - 4000]);
-            printf("Ambient temperature is %lf", Tinf[face[i].bc - 4000]);
-            face_flag[face[i].bc - 4000] = 1;
         }
     }
 

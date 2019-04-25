@@ -60,7 +60,7 @@ extern double *d_f;
 // Area of each cell
 extern double *a_c;
 // Temperature, x,y, and z centroid co-ordinate
-extern double *T,*xc,*yc,*zc;
+extern double *T,*Told,*xc,*yc,*zc;
 
 extern int choice,w_timestep;
 extern double t_end,dt,time;
