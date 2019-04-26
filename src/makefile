@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -lm -fopenmp
-CFLAGS2 = -lm -fopenmp -lpthread
+CFLAGS = -lm -fopenmp -O2
+CFLAGS2 = -lm -fopenmp -lpthread -O2
 DEPS = global.h
 OBJ = poisson.o readGrid.o initializationSteady.o cellNeighbours.o faceDistance.o solver.o nodes2Cells.o writingVTK.o
 
