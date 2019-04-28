@@ -1,8 +1,7 @@
-  
 // Main file for the solver. Calls all the functions / subroutines to do the work.
 
 #include"global.h"
-#include "mpi.h"
+
 struct node_data *node;
 struct cell_data *cell;
 struct face_data *face;
@@ -36,11 +35,12 @@ int size;
 
 int main(int argc,char* argv[])
 {
-
+ // MPI Inititialization
  MPI_Init(&argc,&argv);
  MPI_Comm_size(MPI_COMM_WORLD, &size);
  MPI_Comm_rank(MPI_COMM_WORLD, &myid);
- // Dummy variable to check if there is any error while running the functions
+ 
+// Dummy variable to check if there is any error while running the functions
  int error;
  
  // Reads the mesh and stores it in memory
@@ -82,8 +82,10 @@ int main(int argc,char* argv[])
   printf("Error in solver\nHence exiting\n");
   return(0);
  }
- // TODO the functions below should be executed by only one process, right?
- if(myid == 0){
+
+ // The functions below should be executed by only one process, so that the output file is written only once.
+ if(myid == 0)
+ {
    // Gets the information of which cells share a node for interpolation to nodes in VTK file
    error = nodes2Cells();
    if (error != 0)
@@ -100,8 +102,23 @@ int main(int argc,char* argv[])
     return(0);
    }
  }
+
+ free(node);
+ free(face);
+ free(cell);
+ free(n2c);
+ free(ncell);
+ free(d_f);
+ free(a_c);
+ free(T);
+ free(Told);
+ free(xc);
+ free(yc);
+ free(zc);
  
+ MPI_Barrier(MPI_COMM_WORLD);
  MPI_Finalize();
+
  return(0);
 
 }

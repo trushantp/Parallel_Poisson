@@ -61,7 +61,7 @@ int writingVTK()
 
   for (i = 1; i <= c; i++)
   {
-    fprintf(fp, "%24.16E\n", T[i]);
+    fprintf(fp, "%24.16E\n", Told[i]);
   }
 
   // Writing the temperature data for each node
@@ -78,7 +78,7 @@ int writingVTK()
       dist = pow((xc[n2c[i].cell[j]] - node[i].xn), 2) + pow((yc[n2c[i].cell[j]] - node[i].yn), 2);
       dist = pow(dist, 0.5);
       t_dist = t_dist + dist;
-      T_p[i] = T_p[i] + dist * T[n2c[i].cell[j]];
+      T_p[i] = T_p[i] + dist * Told[n2c[i].cell[j]];
     }
     T_p[i] = T_p[i] / t_dist;
     fprintf(fp, "%24.16E\n", T_p[i]);

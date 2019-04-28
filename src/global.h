@@ -7,6 +7,7 @@
 #include<stdlib.h>
 #include<math.h>
 #include<string.h>
+#include"mpi.h"
 
 // Structure for storing the co-ordinates of node
 struct node_data
@@ -64,6 +65,8 @@ extern double *T,*Told,*xc,*yc,*zc;
 extern int choice,w_timestep;
 extern double t_end,dt,time;
 extern double diffusivity,beta;
+extern int myid;
+extern int size;
 
 extern double Re;
 extern double *w;
@@ -76,9 +79,6 @@ extern int faceDistance();
 extern int solver();
 extern int nodes2Cells();
 extern int writingVTK();
-
-extern int myid;
-extern int size;
 
 #define MY_MPI_TAG 100
 

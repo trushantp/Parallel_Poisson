@@ -3,8 +3,8 @@
 
 int faceDistance()
 {
-
-    printf("*****CALCULATING FACE DISTANCE*****\n");
+    if (myid == 0)
+        printf("*****CALCULATING FACE DISTANCE*****\n");
 
     // Allocates the memory to store face distance
     d_f = (double *)malloc((f + 1) * sizeof(double));
@@ -42,8 +42,8 @@ int faceDistance()
     // printf("%lf\n",a_c[1]);
     // printf("%lf\n",a_c[10]);
     // printf("%lf\n",a_c[100]);
-
-    printf("*****FACE DISTANCE CALCULATED*****\n\n");
+    if (myid == 0)
+        printf("*****FACE DISTANCE CALCULATED*****\n\n");
 
     return (0);
 }
