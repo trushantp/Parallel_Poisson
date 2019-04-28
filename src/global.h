@@ -59,7 +59,7 @@ extern double *d_f;
 // Area of each cell
 extern double *a_c;
 // Temperature, x,y, and z centroid co-ordinate
-extern double *T,*Told,*xc,*yc,*zc;
+extern double *T,*xc,*yc,*zc;
 
 extern int choice,w_timestep;
 extern double t_end,dt,time;
@@ -76,5 +76,10 @@ extern int faceDistance();
 extern int solver();
 extern int nodes2Cells();
 extern int writingVTK();
+
+extern int myid;
+extern int size;
+
+#define MY_MPI_TAG 100
 
 #endif // GLOBAL_H_INCLUDED

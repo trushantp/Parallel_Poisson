@@ -32,6 +32,15 @@ int initializationSteady()
         // Checking which boundary condition label it corresponds to, and then reads the associated boundary condition property
         if ((bc_number[i] == 1001) || (bc_number[i] == 1002) || (bc_number[i] == 1003) || (bc_number[i] == 1004))
             fscanf(fp, "%lf", &bc_prop[i]);
+
+        if ((bc_number[i] == 2001) || (bc_number[i] == 2002) || (bc_number[i] == 2003) || (bc_number[i] == 2004))
+            ;
+
+        if ((bc_number[i] == 3001) || (bc_number[i] == 3002) || (bc_number[i] == 3003) || (bc_number[i] == 3004))
+            fscanf(fp, "%lf", &bc_prop[i]);
+
+        if ((bc_number[i] == 4001) || (bc_number[i] == 4002) || (bc_number[i] == 4003) || (bc_number[i] == 4004))
+            fscanf(fp, "%lf %lf", &bc_prop[i], &bc_prop2[i]);
     }
 
     // Initializing face flag to 0

@@ -1,4 +1,4 @@
-CC = gcc
+CC = mpicc
 CFLAGS = -lm -I.
 DEPS = global.h
 OBJ = poisson.o readGrid.o initializationSteady.o cellNeighbours.o faceDistance.o solver.o nodes2Cells.o writingVTK.o
@@ -7,7 +7,7 @@ OBJ = poisson.o readGrid.o initializationSteady.o cellNeighbours.o faceDistance.
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 poissonSolver: $(OBJ)
-	g++ -o $@ $^ $(CFLAGS)
+	mpic++ -o $@ $^ $(CFLAGS)
 
 .PHONY: clean
 
