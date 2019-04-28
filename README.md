@@ -59,7 +59,7 @@ make
 Once it is compiled, it will create an executable named ```poissonSolver```, copy that to the case directory, and run using the command
 
 ```
-./poissonSolver
+mpiexec -np <num_processes> ./poissonSolver
 ```
 
 ## Validation for Poisson Solver
