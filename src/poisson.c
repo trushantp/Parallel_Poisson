@@ -1,3 +1,4 @@
+  
 // Main file for the solver. Calls all the functions / subroutines to do the work.
 
 #include"global.h"
@@ -14,7 +15,7 @@ int count=0;
 double t[5],hf[5],alpha[5],Tinf[5];
 double *d_f;
 double *a_c;
-double *T,*xc,*yc,*zc;
+double *T,*Told,*xc,*yc,*zc;
 
 int choice,w_timestep;
 double t_end,dt,time;
@@ -30,7 +31,6 @@ int faceDistance();
 int solver();
 int nodes2Cells();
 int writingVTK();
-
 int myid;
 int size;
 

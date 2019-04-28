@@ -15,17 +15,17 @@ int readGrid()
  
  // Reading the total number of nodes
  fscanf(fp,"%d",&n);
- // printf("reading n : %d\n", n);
+ 
  // Allocating the memory for storing the co-ordinates of all the nodes
  node = (struct node_data *) malloc((n+1)*sizeof(struct node_data));
  
  // Reading the co-ordinates of all the nodes and storing it in memory
  for (i=1;i<=n;i++)
   fscanf(fp,"%lf %lf %lf",&node[i].xn,&node[i].yn,&node[i].zn);
- // printf("reading co-ordinates : %f %f %f\n", node[1000].xn, node[1000].yn, node[1000].zn);
+ 
  // Reading the total number of cells
  fscanf(fp,"%d",&c);
- // printf("reading c : %d\n", c);
+ 
  // Allocating the memory for storing all the vertice location for a given cell
  cell = (struct cell_data *) malloc((c+1)*sizeof(struct cell_data));
  
@@ -34,14 +34,11 @@ int readGrid()
  {
   // Reads how many vertices constitute the cell
   fscanf(fp,"%d",&cell[i].num_nodes);
-  // if(cell[i].num_nodes != 3) printf("yesssssss %d\n", cell[i].num_nodes);
-  // if(i <105 && i > 90) printf(" num nodes : %d\n", cell[100].num_nodes);
   count++;
   // Reads the vertices location
   for (j=1;j<=cell[i].num_nodes;j++)
   {
    fscanf(fp,"%d",&cell[i].node[j]);
-   // printf("yoooooo %d\n",cell[i].node[j]);
    count++;
   }
  }
@@ -53,11 +50,9 @@ int readGrid()
  face = (struct face_data *) malloc((f+1)*sizeof(struct face_data));
  
  // Reading the vertices which constitute the face, the cells which are sharing the face. If the face is a boundary face, one of the cell would be 0, and the other would be the cell number
- for (i=1;i<=f;i++){
+ for (i=1;i<=f;i++)
   fscanf(fp,"%d %d %d %d %d",&face[i].node[1],&face[i].node[2],&face[i].cell[1],&face[i].cell[2],&face[i].bc);
-  // printf("here %d %d %d %d %d",face[i].node[1],face[i].node[2],face[i].cell[1],face[i].cell[2],face[i].bc);
-  // printf("num faces : %d\n", f);
- }
+ 
  // Closing the grid file
  fclose(fp);
 
