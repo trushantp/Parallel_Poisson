@@ -15,6 +15,7 @@ double t[5],hf[5],alpha[5],Tinf[5];
 double *d_f;
 double *a_c;
 double *T,*Told,*xc,*yc,*zc;
+int *procID;
 
 int choice,w_timestep;
 double t_end,dt,time;

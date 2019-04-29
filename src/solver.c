@@ -13,6 +13,7 @@ int solver()
   // Allocating memory for temperature for each cell
   T = (double *)malloc((c + 1) * sizeof(double));
   Told = (double *)malloc((c + 1) * sizeof(double));
+  procID = (int *)malloc((c + 1) * sizeof(double));
   // Allocating memory for centroid x, y and z co-ordinate for a cell
   xc = (double *)malloc((c + 1) * sizeof(double));
   yc = (double *)malloc((c + 1) * sizeof(double));
@@ -38,21 +39,26 @@ int solver()
 
   // Initializing the rms error to 10, so that the loop runs
   diff = 10;
-  
+
   double *T_part;
-  int arraySize = (int)(c * (myid + 1)/size) - (int)(c * myid /size);
+  int *processorNumber;
+  int arraySize = (int)(c * (myid + 1) / size) - (int)(c * myid / size);
   T_part = (double *)malloc((arraySize) * sizeof(double));
+  processorNumber = (int *)malloc((arraySize) * sizeof(int));
+
+  for (i = 0; i < arraySize; i++)
+    processorNumber[i] = myid;
 
   int arraySizeProcs[size];
   int displ[size];
 
-  for (i=0;i<size;i++)
+  for (i = 0; i < size; i++)
   {
-    arraySizeProcs[i] = (int)(c * (i + 1)/size) - (int)(c * i /size);
+    arraySizeProcs[i] = (int)(c * (i + 1) / size) - (int)(c * i / size);
     if (i == 0)
       displ[i] = 0;
     else
-      displ[i] = displ[i-1] + arraySizeProcs[i-1];
+      displ[i] = displ[i - 1] + arraySizeProcs[i - 1];
   }
 
   // Solver loop runs till the rms error goes below 10e-6
@@ -60,7 +66,7 @@ int solver()
   {
     r = 0.0;
 
-    for (i = (int)(c * myid /size) + 1; i <= (int)(c * (myid + 1)/size); i++)
+    for (i = (int)(c * myid / size) + 1; i <= (int)(c * (myid + 1) / size); i++)
     {
       if (ncell[i].num_of_ncells == ncell[i].num_of_faces)
       {
@@ -117,14 +123,14 @@ int solver()
 
     if (myid == 0)
     {
-      for (i=1; i<size; i++)
+      for (i = 1; i < size; i++)
       {
         double r_part;
         MPI_Recv(&r_part, 1, MPI_DOUBLE, i, 10, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         r += r_part;
       }
       diff = pow(r, 0.5);
-      for (i=1; i<size; i++)
+      for (i = 1; i < size; i++)
       {
         MPI_Send(&diff, 1, MPI_DOUBLE, i, 10, MPI_COMM_WORLD);
       }
@@ -132,21 +138,26 @@ int solver()
       if (count1 % 100 == 0)
         printf("%d\t%16.8E\n", count1, diff);
     }
-    else{
+    else
+    {
       MPI_Send(&r, 1, MPI_DOUBLE, 0, 10, MPI_COMM_WORLD);
       MPI_Recv(&diff, 1, MPI_DOUBLE, 0, 10, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     }
 
-    for (i = (int)(c * myid /size) + 1; i <= (int)(c * (myid + 1)/size); i++)
+    for (i = (int)(c * myid / size) + 1; i <= (int)(c * (myid + 1) / size); i++)
       Told[i] = T[i];
 
-    for (i = 0; i<arraySize; i++)
-      T_part[i] = T[(int)(c * myid /size) + 1 + i];
+    for (i = 0; i < arraySize; i++)
+      T_part[i] = T[(int)(c * myid / size) + 1 + i];
 
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Allgatherv(&T_part[0], arraySize, MPI_DOUBLE, &Told[1], arraySizeProcs, displ, MPI_DOUBLE, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
   }
+
+  MPI_Barrier(MPI_COMM_WORLD);
+  MPI_Allgatherv(&processorNumber[0], arraySize, MPI_INT, &procID[1], arraySizeProcs, displ, MPI_INT, MPI_COMM_WORLD);
+  MPI_Barrier(MPI_COMM_WORLD);
 
   if (myid == 0)
     printf("*****SOLVER FOR STEADY STATE COMPLETED*****\n\n");

@@ -61,6 +61,7 @@ extern double *d_f;
 extern double *a_c;
 // Temperature, x,y, and z centroid co-ordinate
 extern double *T,*Told,*xc,*yc,*zc;
+extern int *procID;
 
 extern int choice,w_timestep;
 extern double t_end,dt,time;

@@ -56,12 +56,12 @@ int writingVTK()
 
   // Writing the temperature data for each cell
   fprintf(fp, "CELL_DATA %d\n", c);
-  fprintf(fp, "SCALARS Temperature double\n");
+  fprintf(fp, "SCALARS Processor_Number int\n");
   fprintf(fp, "LOOKUP_TABLE default\n");
 
   for (i = 1; i <= c; i++)
   {
-    fprintf(fp, "%24.16E\n", Told[i]);
+    fprintf(fp, "%d\n", procID[i]);
   }
 
   // Writing the temperature data for each node
