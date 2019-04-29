@@ -124,12 +124,18 @@ int solver()
         r += r_part;
       }
       diff = pow(r, 0.5);
+      for (i=1; i<size; i++)
+      {
+        MPI_Send(&diff, 1, MPI_DOUBLE, i, 10, MPI_COMM_WORLD);
+      }
       count1++;
       if (count1 % 100 == 0)
         printf("%d\t%16.8E\n", count1, diff);
     }
-    else
+    else{
       MPI_Send(&r, 1, MPI_DOUBLE, 0, 10, MPI_COMM_WORLD);
+      MPI_Recv(&diff, 1, MPI_DOUBLE, 0, 10, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    }
 
     for (i = (int)(c * myid /size) + 1; i <= (int)(c * (myid + 1)/size); i++)
       Told[i] = T[i];

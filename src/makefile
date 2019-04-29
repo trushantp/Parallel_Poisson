@@ -1,5 +1,5 @@
 CC = mpicc
-CFLAGS = -O2
+CFLAGS = -O2 -lm
 DEPS = global.h
 OBJ = poisson.o readGrid.o initializationSteady.o cellNeighbours.o faceDistance.o solver.o nodes2Cells.o writingVTK.o
 
