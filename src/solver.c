@@ -43,6 +43,18 @@ int solver()
   int arraySize = (int)(c * (myid + 1)/size) - (int)(c * myid /size);
   T_part = (double *)malloc((arraySize) * sizeof(double));
 
+  int arraySizeProcs[size];
+  int displ[size];
+
+  for (i=0;i<size;i++)
+  {
+    arraySizeProcs[i] = (int)(c * (i + 1)/size) - (int)(c * i /size);
+    if (i == 0)
+      displ[i] = 0;
+    else
+      displ[i] = displ[i-1] + arraySizeProcs[i-1];
+  }
+
   // Solver loop runs till the rms error goes below 10e-6
   while (diff > 1e-8)
   {
@@ -126,9 +138,8 @@ int solver()
       T_part[i] = T[(int)(c * myid /size) + 1 + i];
 
     MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Allgather(&T_part[0], arraySize, MPI_DOUBLE, &Told[1], arraySize, MPI_DOUBLE, MPI_COMM_WORLD);
+    MPI_Allgatherv(&T_part[0], arraySize, MPI_DOUBLE, &Told[1], arraySizeProcs, displ, MPI_DOUBLE, MPI_COMM_WORLD);
     MPI_Barrier(MPI_COMM_WORLD);
-
   }
 
   if (myid == 0)
